@@ -11,8 +11,8 @@
 	<groupId>com.vych</groupId>
 	<artifactId>HomeKeeperRest</artifactId>
 	<version>1.0.0-STABLE</version>
-	<name>HomeKeeperRest</name>
-	<description>HK</description>
+	<name>EmployersManagerRest</name>
+	<description>EmployersManagerRest</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
