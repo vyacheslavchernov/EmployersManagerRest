@@ -26,7 +26,7 @@ public class LoggingAspect {
         this.LOGS_REPO = logsRepo;
     }
 
-    @AfterReturning(pointcut="@annotation(com.vych.HomeKeeperRest.Aspects.Annotations.NeedLogs)", returning="response")
+    @AfterReturning(pointcut="@annotation(com.vych.EmployersManagerRest.Aspects.Annotations.NeedLogs)", returning="response")
     public void callAtNeedLogs(JoinPoint joinPoint, ApiResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         WebAuthenticationDetails details = (WebAuthenticationDetails) auth.getDetails();
