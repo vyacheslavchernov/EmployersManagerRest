@@ -41,7 +41,7 @@ public class UsersController {
         }
 
         User user = USER_REPO.findByUsername(username).orElse(null);
-        if (user == null ) {
+        if (user == null) {
             return ResponseUtil.buildError(
                     new IncorrectData("Не найдено пользователя с username " + username),
                     "Не удалось получить данные пользователя"
@@ -128,16 +128,9 @@ public class UsersController {
         try {
             USER_REPO.save(userdata);
         } catch (Exception e) {
-            return ResponseUtil.buildError(e, "Ошибка при попытке удалить пользователя");
+            return ResponseUtil.buildError(e, "Ошибка при попытке обновить пользователя");
         }
 
         return ResponseUtil.buildSuccess();
     }
-
-    //TODO: Установка прав для пользователя из набора битов
-    //TODO: Добавление схемы прав
-    //TODO: Удаление схемы прав
-    //TODO: Получение схемы прав
-    //TODO: Установка прав для пользователя (схема прав)
-    //TODO: Получение прав пользователя
 }

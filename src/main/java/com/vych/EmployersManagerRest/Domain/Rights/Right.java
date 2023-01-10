@@ -20,7 +20,6 @@ public class Right implements ResponsePayload {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "users_id")
-    @JsonIgnore
     private User user;
 
     @JsonProperty("rightsBits")
