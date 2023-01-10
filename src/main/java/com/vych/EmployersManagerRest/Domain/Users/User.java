@@ -6,6 +6,7 @@ import com.vych.EmployersManagerRest.ApiCore.Payloads.ResponsePayload;
 import com.vych.EmployersManagerRest.Domain.Views;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 /**
  * Учётные данные пользователей
@@ -16,6 +17,7 @@ public class User implements ResponsePayload {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("id")
     @JsonView(Views.NonSensitiveData.class)
     private Long id;
 
@@ -27,9 +29,25 @@ public class User implements ResponsePayload {
     @JsonView(Views.NonSensitiveData.class)
     private String lastName;
 
-    @JsonProperty("email")
+    @JsonProperty("patrname")
     @JsonView(Views.NonSensitiveData.class)
-    private String email;
+    private String patrname;
+
+    @JsonProperty("pseudonym")
+    @JsonView(Views.NonSensitiveData.class)
+    private String pseudonym;
+
+    @JsonProperty("position")
+    @JsonView(Views.NonSensitiveData.class)
+    private String position;
+
+    @JsonProperty("employed_from")
+    @JsonView(Views.NonSensitiveData.class)
+    private Date employed_from;
+
+    @JsonProperty("fired_from")
+    @JsonView(Views.NonSensitiveData.class)
+    private Date fired_from;
 
     @JsonProperty("username")
     @JsonView(Views.NonSensitiveData.class)
@@ -75,12 +93,48 @@ public class User implements ResponsePayload {
         return this;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPatrname() {
+        return patrname;
     }
 
-    public User setEmail(String email) {
-        this.email = email;
+    public User setPatrname(String patrname) {
+        this.patrname = patrname;
+        return this;
+    }
+
+    public String getPseudonym() {
+        return pseudonym;
+    }
+
+    public User setPseudonym(String pseudonym) {
+        this.pseudonym = pseudonym;
+        return this;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public User setPosition(String position) {
+        this.position = position;
+        return this;
+    }
+
+    public Date getEmployed_from() {
+        return employed_from;
+    }
+
+    public User setEmployed_from(Date employed_from) {
+        this.employed_from = employed_from;
+        return this;
+    }
+
+    public Date getFired_from() {
+        return fired_from;
+    }
+
+    public User setFired_from(Date fired_from) {
+        this.fired_from = fired_from;
         return this;
     }
 
