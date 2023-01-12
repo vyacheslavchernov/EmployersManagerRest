@@ -19,7 +19,6 @@ import java.util.Collections;
 
 @RestController
 public class UsersController {
-
     private final String CONTROLLER_ENDPOINT = "api/users/";
 
     private final UserRepo USER_REPO;
@@ -101,7 +100,7 @@ public class UsersController {
         try {
             USER_REPO.delete(user);
         } catch (Exception e) {
-            return ResponseUtil.buildError(e, "Ошибка при попытке удалить пользователя");
+            return ResponseUtil.buildError(e, "Ошибка при попытке обновить пользователя");
         }
 
         return ResponseUtil.buildSuccess();
