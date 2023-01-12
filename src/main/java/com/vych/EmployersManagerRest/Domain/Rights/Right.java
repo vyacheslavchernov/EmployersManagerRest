@@ -18,8 +18,8 @@ public class Right implements ResponsePayload {
     @JsonView(Views.NonSensitiveData.class)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "users_id")
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @JsonProperty("rightsBits")

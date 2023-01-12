@@ -17,7 +17,6 @@ public class User implements ResponsePayload {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("id")
     @JsonView(Views.NonSensitiveData.class)
     private Long id;
 
