@@ -1,38 +1,32 @@
 package com.vych.EmployersManagerRest;
 
-import com.vych.EmployersManagerRest.Domain.Users.Role;
-import com.vych.EmployersManagerRest.Domain.Users.User;
+import com.vych.EmployersManagerRest.Repo.Accounts.AccountRepo;
+import com.vych.EmployersManagerRest.Repo.Accounts.OperationRepo;
+import com.vych.EmployersManagerRest.Repo.Aspects.LogsRepo;
+import com.vych.EmployersManagerRest.Repo.Rights.RightRepo;
+import com.vych.EmployersManagerRest.Repo.Rights.RightSchemeRepo;
+import com.vych.EmployersManagerRest.Repo.Shifts.FineRepo;
+import com.vych.EmployersManagerRest.Repo.Shifts.ShiftPlanRepo;
+import com.vych.EmployersManagerRest.Repo.Shifts.ShiftRepo;
 import com.vych.EmployersManagerRest.Repo.Users.RoleRepo;
 import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @Disabled
 @SpringBootTest
-class EmployersManagerRestApplicationTests {
+class EmployersManagerRestApplicationTests extends BaseTest {
 
-	private final UserRepo USER_REPO;
-	//private final RoleRepo ROLE_REPO;
-
-	@Autowired
-	public EmployersManagerRestApplicationTests(UserRepo userRepo, RoleRepo roleRepo) {
-		this.USER_REPO = userRepo;
-		//this.ROLE_REPO = roleRepo;
-	}
-
-	@Test
-	void createNewUser() {
-		USER_REPO.save(
-				new User()
-						.setEnabled(true)
-						.setFirstName("user")
-						.setLastName("user")
-						.setPassword("0000")
-						.setUsername("vy")
-						.setRole(new Role().setAuthority("ROLE_ADMIN").setName("vy"))
-		);
-	}
-
+    @Autowired
+    public EmployersManagerRestApplicationTests(
+            UserRepo userRepo, RoleRepo roleRepo, ShiftRepo shiftRepo,
+            ShiftPlanRepo shiftPlanRepo, FineRepo fineRepo, RightSchemeRepo rightSchemeRepo,
+            RightRepo rightRepo, LogsRepo logsRepo, OperationRepo operationRepo, AccountRepo accountRepo
+    ) {
+        super(
+                userRepo, roleRepo, shiftRepo, shiftPlanRepo, fineRepo,
+                rightSchemeRepo, rightRepo, logsRepo, operationRepo, accountRepo
+        );
+    }
 }

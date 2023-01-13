@@ -1,6 +1,5 @@
 package com.vych.EmployersManagerRest.Domain.Rights;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.vych.EmployersManagerRest.ApiCore.Payloads.ResponsePayload;
@@ -28,8 +27,8 @@ public class Right implements ResponsePayload {
     @JsonProperty("useRightsScheme")
     private boolean useRightsScheme;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "right_scheme_name")
+    @ManyToOne
+    @JoinColumn(name = "right_schemes_name")
     private RightScheme rightScheme;
 
     public Long getId() {
@@ -45,8 +44,9 @@ public class Right implements ResponsePayload {
         return user;
     }
 
-    public void setUser(User user) {
+    public Right setUser(User user) {
         this.user = user;
+        return this;
     }
 
     public String getRightsBits() {
@@ -71,7 +71,8 @@ public class Right implements ResponsePayload {
         return rightScheme;
     }
 
-    public void setRightScheme(RightScheme rightScheme) {
+    public Right setRightScheme(RightScheme rightScheme) {
         this.rightScheme = rightScheme;
+        return this;
     }
 }

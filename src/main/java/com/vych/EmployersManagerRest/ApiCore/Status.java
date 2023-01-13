@@ -16,23 +16,18 @@ public class Status {
 
     @JsonProperty("code")
     @JsonView(Views.AllData.class)
-    private int code;
+    private StatusCode code;
 
     @JsonProperty("errors")
     @JsonView(Views.AllData.class)
     private List<Error> errors;
 
-    public int getCode() {
+    public StatusCode getCode() {
         return code;
     }
 
-    public Status setCode(int code) {
-        this.code = code;
-        return this;
-    }
-
     public Status setCode(StatusCode code) {
-        this.code = code.ordinal();
+        this.code = code;
         return this;
     }
 

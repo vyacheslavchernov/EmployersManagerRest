@@ -78,6 +78,18 @@ public class RightsController {
     }
 
     @NeedLogs
+    @PostMapping(CONTROLLER_ENDPOINT + "deleteRights")
+    public ApiResponse deleteUserRights(@RequestParam Long id) {
+        try {
+            RIGHT_REPO.deleteById(id);
+        } catch (Exception e) {
+            return ResponseUtil.buildError(e, "Ошибка при попытке обновить/добавить права пользователя");
+        }
+
+        return ResponseUtil.buildSuccess();
+    }
+
+    @NeedLogs
     @PostMapping(CONTROLLER_ENDPOINT + "addRightsScheme")
     public ApiResponse addRightScheme(@RequestBody RightScheme rightScheme) {
         if (RIGHT_SCHEME_REPO.findById(rightScheme.getName()).isPresent()) {
@@ -162,7 +174,7 @@ public class RightsController {
         List<RightScheme> schemes;
 
         try {
-            schemes = (ArrayList<RightScheme>) RIGHT_SCHEME_REPO.findAll();
+            schemes = RIGHT_SCHEME_REPO.findAll();
         } catch (Exception e) {
             return ResponseUtil.buildError(e, "Ошибка при попытке получить все схемы прав");
         }
