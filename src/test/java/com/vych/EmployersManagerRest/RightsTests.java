@@ -1,6 +1,7 @@
 package com.vych.EmployersManagerRest;
 
 import com.vych.EmployersManagerRest.ApiCore.ApiResponse;
+import com.vych.EmployersManagerRest.ApiCore.Payloads.ListPayload;
 import com.vych.EmployersManagerRest.ApiCore.StatusCode;
 import com.vych.EmployersManagerRest.Controllers.RightsController;
 import com.vych.EmployersManagerRest.Domain.Rights.Right;
@@ -19,6 +20,8 @@ import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
 
 import static io.qameta.allure.Allure.step;
 
@@ -190,5 +193,45 @@ public class RightsTests extends BaseTest {
 
         rightsSteps.getRightScheme(ref.schemeName);
         rightsSteps.deleteRightsScheme(ref.schemeName);
+    }
+
+    /**
+     * Создаём n количество схем прав.
+     * Пытаемся получить все эти схемы за раз. Сверяем количество полученых схем с n.
+     * Удаляем созданные схемы.
+     */
+    @Test
+    @DisplayName("Получение всех схем прав списком")
+    @Description(useJavaDoc = true)
+    public void getAllRightsScheme() {
+        int n = 5 + steps.RANDOM.nextInt(6);
+        var ref = new Object() {
+            ApiResponse response;
+            ListPayload payload;
+        };
+
+        step("Создание n схем правил в БД", () -> {
+            for (int i = 0; i < n; i++) {
+                rightsSteps.addNewRightScheme(
+                        Utils.getRandomLettersStringWithLength(10),
+                        Utils.getRandomBitsWithLength(10)
+                );
+            }
+        });
+
+        step("Получение всех схем прав", () -> {
+            ref.response = RIGHTS_CONTROLLER.getAllRightSchemes();
+            steps.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
+            ref.payload = (ListPayload) ref.response.getPayload();
+            steps.checkCollectionSize((Collection<?>) ref.payload.getListOfPayload().get(0), n);
+        });
+
+        step("Удаление созданных схем прав", () -> {
+            for (Object scheme : (Collection<?>) ref.payload.getListOfPayload().get(0)) {
+                String schemeName = ((RightScheme) scheme).getName();
+                rightsSteps.deleteRightsScheme(schemeName);
+                rightsSteps.getRightScheme(schemeName, StatusCode.ERROR);
+            }
+        });
     }
 }

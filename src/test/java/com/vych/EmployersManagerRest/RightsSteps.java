@@ -50,7 +50,7 @@ public class RightsSteps extends BaseSteps {
                 response.getStatus().getCode(),
                 expectedStatusCode.length > 0 ? expectedStatusCode[0] : StatusCode.SUCCESS
         );
-        return expectedStatusCode.length > 0 ? null : (RightScheme) response.getPayload();
+        return response.getStatus().getCode() == StatusCode.ERROR ? null : (RightScheme) response.getPayload();
     }
 
     @Step("Удаление схемы прав")
@@ -66,7 +66,7 @@ public class RightsSteps extends BaseSteps {
                 response.getStatus().getCode(),
                 expectedStatusCode.length > 0 ? expectedStatusCode[0] : StatusCode.SUCCESS
         );
-        return expectedStatusCode.length > 0 ? null : (Right) response.getPayload();
+        return response.getStatus().getCode() == StatusCode.ERROR ? null : (Right) response.getPayload();
     }
 
     @Step("Проверка равенства битов правил")

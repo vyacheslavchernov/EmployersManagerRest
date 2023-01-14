@@ -18,7 +18,11 @@ import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
 import io.qameta.allure.Step;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,6 +38,8 @@ public class BaseSteps {
     protected final LogsRepo LOGS_REPO;
     protected final OperationRepo OPERATION_REPO;
     protected final AccountRepo ACCOUNT_REPO;
+
+    protected final Random RANDOM = new Random();
 
     @Autowired
     public BaseSteps(
@@ -58,6 +64,8 @@ public class BaseSteps {
         this.LOGS_REPO = logsRepo;
         this.OPERATION_REPO = operationRepo;
         this.ACCOUNT_REPO = accountRepo;
+
+        RANDOM.setSeed(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
     }
 
     @Step("Создание нового пользователя без записи в БД")
@@ -102,5 +110,14 @@ public class BaseSteps {
     @Step("Проверка на not null объекта {object}")
     protected void checkNotNull(Object object) {
         assertNotNull(object, "Объект равен null");
+    }
+
+    @Step("Проверка размера коллекции {collection} на соответствие размеру в {expectedSize} элементов")
+    protected <T> void checkCollectionSize(Collection<T> collection, int expectedSize) {
+        assertEquals(
+                expectedSize,
+                collection.size(),
+                "Размер коллекции не совпадает с ожидаемым"
+        );
     }
 }
