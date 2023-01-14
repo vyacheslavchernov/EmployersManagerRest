@@ -1,4 +1,4 @@
-package com.vych.EmployersManagerRest;
+package com.vych.EmployersManagerRest.Steps;
 
 import com.vych.EmployersManagerRest.ApiCore.StatusCode;
 import com.vych.EmployersManagerRest.Domain.Rights.Right;
@@ -15,6 +15,7 @@ import com.vych.EmployersManagerRest.Repo.Shifts.ShiftPlanRepo;
 import com.vych.EmployersManagerRest.Repo.Shifts.ShiftRepo;
 import com.vych.EmployersManagerRest.Repo.Users.RoleRepo;
 import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
+import com.vych.EmployersManagerRest.Utils;
 import io.qameta.allure.Step;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,18 +29,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BaseSteps {
-    protected final UserRepo USER_REPO;
-    protected final RoleRepo ROLE_REPO;
-    protected final ShiftRepo SHIFT_REPO;
-    protected final ShiftPlanRepo SHIFT_PLAN_REPO;
-    protected final FineRepo FINE_REPO;
-    protected final RightSchemeRepo RIGHT_SCHEME_REPO;
-    protected final RightRepo RIGHT_REPO;
-    protected final LogsRepo LOGS_REPO;
-    protected final OperationRepo OPERATION_REPO;
-    protected final AccountRepo ACCOUNT_REPO;
+    final UserRepo USER_REPO;
+    final RoleRepo ROLE_REPO;
+    final ShiftRepo SHIFT_REPO;
+    final ShiftPlanRepo SHIFT_PLAN_REPO;
+    final FineRepo FINE_REPO;
+    final RightSchemeRepo RIGHT_SCHEME_REPO;
+    final RightRepo RIGHT_REPO;
+    final LogsRepo LOGS_REPO;
+    final OperationRepo OPERATION_REPO;
+    final AccountRepo ACCOUNT_REPO;
 
-    protected final Random RANDOM = new Random();
+    final Random RANDOM = new Random();
 
     @Autowired
     public BaseSteps(
@@ -69,7 +70,7 @@ public class BaseSteps {
     }
 
     @Step("Создание нового пользователя без записи в БД")
-    protected User createUserWithoutCommit() {
+    public User createUserWithoutCommit() {
         String username = Utils.getRandomLettersStringWithLength(10);
         return new User()
                 .setUsername(username)
@@ -79,14 +80,14 @@ public class BaseSteps {
     }
 
     @Step("Создание нового пользователя с записью в БД")
-    protected User createUserWithCommit() {
+    public User createUserWithCommit() {
         User user = createUserWithoutCommit();
         USER_REPO.save(user);
         return user;
     }
 
     @Step("Удаление пользователя из БД")
-    protected void deleteUserFromBase(User user) {
+    public void deleteUserFromBase(User user) {
         Optional<Right> rightOp = RIGHT_REPO.findByUser(user);
         rightOp.ifPresent(right -> {
             if (right.isUseRightsScheme()) {
@@ -99,7 +100,7 @@ public class BaseSteps {
     }
 
     @Step("Проверка статуса ответа от API")
-    protected void checkApiResponseStatus(StatusCode response, StatusCode expected) {
+    public void checkApiResponseStatus(StatusCode response, StatusCode expected) {
         assertEquals(
                 expected,
                 response,
@@ -108,16 +109,20 @@ public class BaseSteps {
     }
 
     @Step("Проверка на not null объекта {object}")
-    protected void checkNotNull(Object object) {
+    public void checkNotNull(Object object) {
         assertNotNull(object, "Объект равен null");
     }
 
     @Step("Проверка размера коллекции {collection} на соответствие размеру в {expectedSize} элементов")
-    protected <T> void checkCollectionSize(Collection<T> collection, int expectedSize) {
+    public <T> void checkCollectionSize(Collection<T> collection, int expectedSize) {
         assertEquals(
                 expectedSize,
                 collection.size(),
                 "Размер коллекции не совпадает с ожидаемым"
         );
+    }
+
+    public Random getRandom() {
+        return RANDOM;
     }
 }

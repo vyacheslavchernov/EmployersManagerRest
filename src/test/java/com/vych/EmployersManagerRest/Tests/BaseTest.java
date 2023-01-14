@@ -1,4 +1,4 @@
-package com.vych.EmployersManagerRest;
+package com.vych.EmployersManagerRest.Tests;
 
 import com.vych.EmployersManagerRest.Domain.Users.User;
 import com.vych.EmployersManagerRest.Repo.Accounts.AccountRepo;
@@ -11,6 +11,7 @@ import com.vych.EmployersManagerRest.Repo.Shifts.ShiftPlanRepo;
 import com.vych.EmployersManagerRest.Repo.Shifts.ShiftRepo;
 import com.vych.EmployersManagerRest.Repo.Users.RoleRepo;
 import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
+import com.vych.EmployersManagerRest.Steps.BaseSteps;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,20 +21,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class BaseTest {
 
-    protected final UserRepo USER_REPO;
-    protected final RoleRepo ROLE_REPO;
-    protected final ShiftRepo SHIFT_REPO;
-    protected final ShiftPlanRepo SHIFT_PLAN_REPO;
-    protected final FineRepo FINE_REPO;
-    protected final RightSchemeRepo RIGHT_SCHEME_REPO;
-    protected final RightRepo RIGHT_REPO;
-    protected final LogsRepo LOGS_REPO;
-    protected final OperationRepo OPERATION_REPO;
-    protected final AccountRepo ACCOUNT_REPO;
+    final UserRepo USER_REPO;
+    final RoleRepo ROLE_REPO;
+    final ShiftRepo SHIFT_REPO;
+    final ShiftPlanRepo SHIFT_PLAN_REPO;
+    final FineRepo FINE_REPO;
+    final RightSchemeRepo RIGHT_SCHEME_REPO;
+    final RightRepo RIGHT_REPO;
+    final LogsRepo LOGS_REPO;
+    final OperationRepo OPERATION_REPO;
+    final AccountRepo ACCOUNT_REPO;
 
-    protected User testUser;
+    User testUser;
 
-    protected final BaseSteps steps;
+    final BaseSteps steps;
 
     @Autowired
     public BaseTest(

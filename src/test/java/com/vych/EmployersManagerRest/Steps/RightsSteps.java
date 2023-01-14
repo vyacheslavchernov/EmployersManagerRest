@@ -1,4 +1,4 @@
-package com.vych.EmployersManagerRest;
+package com.vych.EmployersManagerRest.Steps;
 
 import com.vych.EmployersManagerRest.ApiCore.ApiResponse;
 import com.vych.EmployersManagerRest.ApiCore.StatusCode;
@@ -33,7 +33,7 @@ public class RightsSteps extends BaseSteps {
     }
 
     @Step("Создаём новой схемы прав")
-    void addNewRightScheme(String schemeName, String rightBits) {
+    public void addNewRightScheme(String schemeName, String rightBits) {
         ApiResponse response = RIGHTS_CONTROLLER.addRightScheme(
                 new RightScheme()
                         .setName(schemeName)
@@ -44,7 +44,7 @@ public class RightsSteps extends BaseSteps {
     }
 
     @Step("Получение схемы прав")
-    RightScheme getRightScheme(String schemeName, StatusCode... expectedStatusCode) {
+    public RightScheme getRightScheme(String schemeName, StatusCode... expectedStatusCode) {
         ApiResponse response = RIGHTS_CONTROLLER.getRightScheme(schemeName);
         checkApiResponseStatus(
                 response.getStatus().getCode(),
@@ -54,13 +54,13 @@ public class RightsSteps extends BaseSteps {
     }
 
     @Step("Удаление схемы прав")
-    void deleteRightsScheme(String schemeName) {
+    public void deleteRightsScheme(String schemeName) {
         ApiResponse response = RIGHTS_CONTROLLER.deleteRightScheme(schemeName);
         checkApiResponseStatus(response.getStatus().getCode(), StatusCode.SUCCESS);
     }
 
     @Step("Получение прав пользователя")
-    Right getUserRight(String username, StatusCode... expectedStatusCode) {
+    public Right getUserRight(String username, StatusCode... expectedStatusCode) {
         ApiResponse response = RIGHTS_CONTROLLER.getUserRights(username);
         checkApiResponseStatus(
                 response.getStatus().getCode(),
@@ -70,7 +70,7 @@ public class RightsSteps extends BaseSteps {
     }
 
     @Step("Проверка равенства битов правил")
-    void checkEqualsForRightBits(String expected, String actual) {
+    public void checkEqualsForRightBits(String expected, String actual) {
         assertEquals(
                 expected,
                 actual,
@@ -79,7 +79,7 @@ public class RightsSteps extends BaseSteps {
     }
 
     @Step("Удаление прав пользователя")
-    void deleteUserRights(Right right) {
+    public void deleteUserRights(Right right) {
         ApiResponse response = RIGHTS_CONTROLLER.deleteUserRights(right.getId());
         checkApiResponseStatus(response.getStatus().getCode(), StatusCode.SUCCESS);
     }

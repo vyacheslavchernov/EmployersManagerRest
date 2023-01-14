@@ -1,4 +1,4 @@
-package com.vych.EmployersManagerRest;
+package com.vych.EmployersManagerRest.Tests;
 
 import com.vych.EmployersManagerRest.ApiCore.ApiResponse;
 import com.vych.EmployersManagerRest.ApiCore.Payloads.ListPayload;
@@ -16,6 +16,8 @@ import com.vych.EmployersManagerRest.Repo.Shifts.ShiftPlanRepo;
 import com.vych.EmployersManagerRest.Repo.Shifts.ShiftRepo;
 import com.vych.EmployersManagerRest.Repo.Users.RoleRepo;
 import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
+import com.vych.EmployersManagerRest.Steps.RightsSteps;
+import com.vych.EmployersManagerRest.Utils;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -204,7 +206,7 @@ public class RightsTests extends BaseTest {
     @DisplayName("Получение всех схем прав списком")
     @Description(useJavaDoc = true)
     public void getAllRightsScheme() {
-        int n = 5 + steps.RANDOM.nextInt(6);
+        int n = 5 + steps.getRandom().nextInt(6);
         var ref = new Object() {
             ApiResponse response;
             ListPayload payload;

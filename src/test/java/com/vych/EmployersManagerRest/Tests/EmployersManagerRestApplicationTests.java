@@ -1,4 +1,4 @@
-package com.vych.EmployersManagerRest;
+package com.vych.EmployersManagerRest.Tests;
 
 import com.vych.EmployersManagerRest.Repo.Accounts.AccountRepo;
 import com.vych.EmployersManagerRest.Repo.Accounts.OperationRepo;
