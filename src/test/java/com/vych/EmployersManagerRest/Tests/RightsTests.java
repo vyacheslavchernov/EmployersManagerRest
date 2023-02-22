@@ -30,7 +30,7 @@ import static io.qameta.allure.Allure.step;
 @DisplayName("Тесты контроллера прав пользователей")
 public class RightsTests extends BaseTest {
 
-    private final RightsSteps rightsSteps;
+    private final RightsSteps RIGHT_STEPS;
     private final RightsController RIGHTS_CONTROLLER;
 
     @Autowired
@@ -44,10 +44,10 @@ public class RightsTests extends BaseTest {
                 rightSchemeRepo, rightRepo, logsRepo, operationRepo, accountRepo
         );
 
-        rightsSteps = new RightsSteps(userRepo, roleRepo, shiftRepo, shiftPlanRepo, fineRepo,
+        RIGHT_STEPS = new RightsSteps(userRepo, roleRepo, shiftRepo, shiftPlanRepo, fineRepo,
                 rightSchemeRepo, rightRepo, logsRepo, operationRepo, accountRepo);
 
-        RIGHTS_CONTROLLER = rightsSteps.getRightsController();
+        RIGHTS_CONTROLLER = RIGHT_STEPS.getRightsController();
     }
 
     /**
@@ -76,30 +76,30 @@ public class RightsTests extends BaseTest {
                             .setUseRightsScheme(false)
                             .setUser(testUser)
             );
-            steps.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
+            STEPS.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
         });
 
         step("Получение прав пользователя и их проверка", () -> {
-            ref.right = rightsSteps.getUserRight(testUser.getUsername());
-            rightsSteps.checkEqualsForRightBits(ref.rightBits, ref.right.getRightsBits());
+            ref.right = RIGHT_STEPS.getUserRight(testUser.getUsername());
+            RIGHT_STEPS.checkEqualsForRightBits(ref.rightBits, ref.right.getRightsBits());
         });
 
         step("Изменение прав пользователя", () -> {
             ref.rightBits = Utils.getRandomBitsWithLength(5);
             ref.right.setRightsBits(ref.rightBits);
             ref.response = RIGHTS_CONTROLLER.setUserRights(ref.right);
-            steps.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
+            STEPS.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
         });
 
         step("Проверка успешности изменения прав пользователя", () -> {
-            ref.right = rightsSteps.getUserRight(testUser.getUsername());
-            rightsSteps.checkEqualsForRightBits(ref.rightBits, ref.right.getRightsBits());
+            ref.right = RIGHT_STEPS.getUserRight(testUser.getUsername());
+            RIGHT_STEPS.checkEqualsForRightBits(ref.rightBits, ref.right.getRightsBits());
         });
 
-        rightsSteps.deleteUserRights(ref.right);
+        RIGHT_STEPS.deleteUserRights(ref.right);
 
         step("Проверка успешности удаления прав пользователя", () -> {
-            rightsSteps.getUserRight(testUser.getUsername(), StatusCode.ERROR);
+            RIGHT_STEPS.getUserRight(testUser.getUsername(), StatusCode.ERROR);
         });
     }
 
@@ -123,29 +123,29 @@ public class RightsTests extends BaseTest {
             RightScheme scheme;
         };
 
-        rightsSteps.addNewRightScheme(ref.schemeName, ref.rightBits);
+        RIGHT_STEPS.addNewRightScheme(ref.schemeName, ref.rightBits);
 
         step("Проверка успешности добавления схемы прав", () -> {
-            ref.scheme = rightsSteps.getRightScheme(ref.schemeName);
-            rightsSteps.checkEqualsForRightBits(ref.rightBits, ref.scheme.getRightsBits());
+            ref.scheme = RIGHT_STEPS.getRightScheme(ref.schemeName);
+            RIGHT_STEPS.checkEqualsForRightBits(ref.rightBits, ref.scheme.getRightsBits());
         });
 
         step("Изменение схемы прав", () -> {
             ref.rightBits = Utils.getRandomBitsWithLength(5);
             ref.scheme.setRightsBits(ref.rightBits);
             ref.response = RIGHTS_CONTROLLER.updateRightScheme(ref.scheme);
-            steps.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
+            STEPS.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
         });
 
         step("Проверка успешности изменения схемы прав", () -> {
-            ref.scheme = rightsSteps.getRightScheme(ref.schemeName);
-            rightsSteps.checkEqualsForRightBits(ref.rightBits, ref.scheme.getRightsBits());
+            ref.scheme = RIGHT_STEPS.getRightScheme(ref.schemeName);
+            RIGHT_STEPS.checkEqualsForRightBits(ref.rightBits, ref.scheme.getRightsBits());
         });
 
-        step("Удаление схемы прав", () -> rightsSteps.deleteRightsScheme(ref.schemeName));
+        step("Удаление схемы прав", () -> RIGHT_STEPS.deleteRightsScheme(ref.schemeName));
 
         step("Проверка успешности удаления схемы прав", () -> {
-            rightsSteps.getRightScheme(ref.schemeName, StatusCode.ERROR);
+            RIGHT_STEPS.getRightScheme(ref.schemeName, StatusCode.ERROR);
         });
     }
 
@@ -171,8 +171,8 @@ public class RightsTests extends BaseTest {
             Right right;
         };
 
-        rightsSteps.addNewRightScheme(ref.schemeName, ref.rightBits);
-        ref.scheme = rightsSteps.getRightScheme(ref.schemeName);
+        RIGHT_STEPS.addNewRightScheme(ref.schemeName, ref.rightBits);
+        ref.scheme = RIGHT_STEPS.getRightScheme(ref.schemeName);
 
         step("Установка прав для пользователя", () -> {
             ref.response = RIGHTS_CONTROLLER.setUserRights(
@@ -181,20 +181,20 @@ public class RightsTests extends BaseTest {
                             .setRightScheme(ref.scheme)
                             .setUser(testUser)
             );
-            steps.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
+            STEPS.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
         });
 
         step("Получение схемы прав установленной для пользователя", () -> {
-            ref.right = rightsSteps.getUserRight(testUser.getUsername());
-            steps.checkNotNull(ref.right.getRightScheme());
-            rightsSteps.checkEqualsForRightBits(ref.rightBits, ref.right.getRightScheme().getRightsBits());
+            ref.right = RIGHT_STEPS.getUserRight(testUser.getUsername());
+            STEPS.checkNotNull(ref.right.getRightScheme());
+            RIGHT_STEPS.checkEqualsForRightBits(ref.rightBits, ref.right.getRightScheme().getRightsBits());
         });
 
-        rightsSteps.deleteUserRights(ref.right);
-        rightsSteps.getUserRight(testUser.getUsername(), StatusCode.ERROR);
+        RIGHT_STEPS.deleteUserRights(ref.right);
+        RIGHT_STEPS.getUserRight(testUser.getUsername(), StatusCode.ERROR);
 
-        rightsSteps.getRightScheme(ref.schemeName);
-        rightsSteps.deleteRightsScheme(ref.schemeName);
+        RIGHT_STEPS.getRightScheme(ref.schemeName);
+        RIGHT_STEPS.deleteRightsScheme(ref.schemeName);
     }
 
     /**
@@ -206,7 +206,7 @@ public class RightsTests extends BaseTest {
     @DisplayName("Получение всех схем прав списком")
     @Description(useJavaDoc = true)
     public void getAllRightsScheme() {
-        int n = 5 + steps.getRandom().nextInt(6);
+        int n = 5 + STEPS.getRandom().nextInt(6);
         var ref = new Object() {
             ApiResponse response;
             ListPayload payload;
@@ -214,7 +214,7 @@ public class RightsTests extends BaseTest {
 
         step("Создание n схем правил в БД", () -> {
             for (int i = 0; i < n; i++) {
-                rightsSteps.addNewRightScheme(
+                RIGHT_STEPS.addNewRightScheme(
                         Utils.getRandomLettersStringWithLength(10),
                         Utils.getRandomBitsWithLength(10)
                 );
@@ -223,16 +223,16 @@ public class RightsTests extends BaseTest {
 
         step("Получение всех схем прав", () -> {
             ref.response = RIGHTS_CONTROLLER.getAllRightSchemes();
-            steps.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
+            STEPS.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
             ref.payload = (ListPayload) ref.response.getPayload();
-            steps.checkCollectionSize((Collection<?>) ref.payload.getListOfPayload().get(0), n);
+            STEPS.checkCollectionSize((Collection<?>) ref.payload.getListOfPayload().get(0), n);
         });
 
         step("Удаление созданных схем прав", () -> {
             for (Object scheme : (Collection<?>) ref.payload.getListOfPayload().get(0)) {
                 String schemeName = ((RightScheme) scheme).getName();
-                rightsSteps.deleteRightsScheme(schemeName);
-                rightsSteps.getRightScheme(schemeName, StatusCode.ERROR);
+                RIGHT_STEPS.deleteRightsScheme(schemeName);
+                RIGHT_STEPS.getRightScheme(schemeName, StatusCode.ERROR);
             }
         });
     }

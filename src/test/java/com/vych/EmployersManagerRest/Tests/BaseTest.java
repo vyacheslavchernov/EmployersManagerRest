@@ -34,7 +34,7 @@ public class BaseTest {
 
     User testUser;
 
-    final BaseSteps steps;
+    final BaseSteps STEPS;
 
     @Autowired
     public BaseTest(
@@ -60,21 +60,21 @@ public class BaseTest {
         this.OPERATION_REPO = operationRepo;
         this.ACCOUNT_REPO = accountRepo;
 
-        steps = new BaseSteps(userRepo, roleRepo, shiftRepo, shiftPlanRepo, fineRepo,
+        STEPS = new BaseSteps(userRepo, roleRepo, shiftRepo, shiftPlanRepo, fineRepo,
                 rightSchemeRepo, rightRepo, logsRepo, operationRepo, accountRepo);
     }
 
     @Step("Подготовка тестовых данных")
     @BeforeEach
     public void init() {
-        testUser = steps.createUserWithCommit();
+        testUser = STEPS.createUserWithCommit();
     }
 
     @Step("Очистка после завершения теста")
     @AfterEach
     public void destruct() {
         if (testUser != null) {
-            steps.deleteUserFromBase(testUser);
+            STEPS.deleteUserFromBase(testUser);
         }
 
     }

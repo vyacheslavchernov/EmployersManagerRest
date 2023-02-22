@@ -3,10 +3,12 @@ package com.vych.EmployersManagerRest.Domain.Users;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.vych.EmployersManagerRest.ApiCore.Payloads.ResponsePayload;
+import com.vych.EmployersManagerRest.Domain.Shifts.ShiftPlan;
 import com.vych.EmployersManagerRest.Domain.Views;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Учётные данные пользователей
@@ -64,6 +66,9 @@ public class User implements ResponsePayload {
     @JsonProperty("role")
     @JsonView(Views.NonSensitiveData.class)
     private Role role;
+
+//    @OneToMany(mappedBy = "user")
+//    private List<ShiftPlan> shiftsPlan;
 
     public Long getId() {
         return id;
@@ -172,4 +177,13 @@ public class User implements ResponsePayload {
         this.role = role;
         return this;
     }
+
+//    public List<ShiftPlan> getShiftsPlan() {
+//        return shiftsPlan;
+//    }
+//
+//    public User setShiftsPlan(List<ShiftPlan> shiftsPlan) {
+//        this.shiftsPlan = shiftsPlan;
+//        return this;
+//    }
 }

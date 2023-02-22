@@ -70,18 +70,18 @@ public class BaseSteps {
     }
 
     @Step("Создание нового пользователя без записи в БД")
-    public User createUserWithoutCommit() {
+    public User createUserWithoutCommit(String... role) {
         String username = Utils.getRandomLettersStringWithLength(10);
         return new User()
                 .setUsername(username)
                 .setPassword(Utils.getRandomLettersStringWithLength(5) + Utils.getRandomNumbersStringWithLength(5))
                 .setEnabled(true)
-                .setRole(new Role().setName(username).setAuthority("ROLE_ADMIN"));
+                .setRole(new Role().setName(username).setAuthority(role.length > 0 ? role[0] : "ROLE_ADMIN"));
     }
 
     @Step("Создание нового пользователя с записью в БД")
-    public User createUserWithCommit() {
-        User user = createUserWithoutCommit();
+    public User createUserWithCommit(String... role) {
+        User user = createUserWithoutCommit(role.length > 0 ? role[0] : "ROLE_ADMIN");
         USER_REPO.save(user);
         return user;
     }

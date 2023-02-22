@@ -3,8 +3,11 @@ package com.vych.EmployersManagerRest.Domain.Shifts;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vych.EmployersManagerRest.ApiCore.Payloads.ResponsePayload;
 import com.vych.EmployersManagerRest.Domain.Users.User;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity(name = "shifts_planer")
@@ -15,13 +18,13 @@ public class ShiftPlan implements ResponsePayload {
     @JsonProperty("id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn
     @JsonProperty("employee")
     private User user;
 
     @JsonProperty("shiftDate")
-    private Date shiftDate;
+    private LocalDateTime shiftDate;
 
     public Long getId() {
         return id;
@@ -41,11 +44,11 @@ public class ShiftPlan implements ResponsePayload {
         return this;
     }
 
-    public Date getShiftDate() {
+    public LocalDateTime getShiftDate() {
         return shiftDate;
     }
 
-    public ShiftPlan setShiftDate(Date shiftDate) {
+    public ShiftPlan setShiftDate(LocalDateTime shiftDate) {
         this.shiftDate = shiftDate;
         return this;
     }

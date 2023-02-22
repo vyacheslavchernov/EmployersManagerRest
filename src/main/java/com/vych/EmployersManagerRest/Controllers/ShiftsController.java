@@ -15,9 +15,11 @@ import com.vych.EmployersManagerRest.Repo.Shifts.FineRepo;
 import com.vych.EmployersManagerRest.Repo.Shifts.ShiftPlanRepo;
 import com.vych.EmployersManagerRest.Repo.Shifts.ShiftRepo;
 import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
+import com.vych.EmployersManagerRest.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +46,13 @@ public class ShiftsController {
     @NeedLogs
     @PostMapping(CONTROLLER_ENDPOINT + "plan/add")
     public ApiResponse addShiftToPlan(@RequestBody ShiftPlan shiftPlan) {
-        if (SHIFT_PLAN_REPO.findByUser(shiftPlan.getUser()).isPresent()) {
+        if (
+                !SHIFT_PLAN_REPO.findAllByUserIdAndFromDateAndToDate(
+                        shiftPlan.getUser().getId(),
+                        Utils.toZeroHour(shiftPlan.getShiftDate()),
+                        Utils.toZeroHour(shiftPlan.getShiftDate())
+                ).isEmpty()
+        ) {
             return ResponseUtil.buildError(
                     new IncorrectData("У пользователя " + shiftPlan.getUser().getUsername() + " уже запланирована смена"),
                     "Ошибка при попытке добавить смену в план"
@@ -52,6 +60,7 @@ public class ShiftsController {
         }
 
         try {
+            shiftPlan.setShiftDate(Utils.toZeroHour(shiftPlan.getShiftDate()));
             SHIFT_PLAN_REPO.save(shiftPlan);
         } catch (Exception e) {
             return ResponseUtil.buildError(e, "Ошибка при попытке добавить смену в план");
@@ -83,7 +92,10 @@ public class ShiftsController {
 
     @NeedLogs
     @GetMapping(CONTROLLER_ENDPOINT + "plan/getForUser")
-    public ApiResponse getUserShiftFromPlan(@RequestParam String username, @RequestParam Date from, @RequestParam Date to) {
+    public ApiResponse getUserShiftFromPlan(@RequestParam String username, @RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
+        from = from != null ? Utils.toZeroHour(from) : null;
+        to = to != null ? Utils.toZeroHour(to) : null;
+
         Optional<User> userOp = USER_REPO.findByUsername(username);
         if (userOp.isEmpty()) {
             return ResponseUtil.buildError(
@@ -120,7 +132,9 @@ public class ShiftsController {
 
     @NeedLogs
     @GetMapping(CONTROLLER_ENDPOINT + "plan/getForAll")
-    public ApiResponse getUserShiftFromPlan(@RequestParam Date from, @RequestParam Date to) {
+    public ApiResponse getAllShiftFromPlan(@RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
+        from = from != null ? Utils.toZeroHour(from) : null;
+        to = to != null ? Utils.toZeroHour(to) : null;
         List<ShiftPlan> shifts;
 
         try {
@@ -188,7 +202,10 @@ public class ShiftsController {
 
     @NeedLogs
     @GetMapping(CONTROLLER_ENDPOINT + "fact/getForUser")
-    public ApiResponse getUserShiftFromFact(@RequestParam String username, @RequestParam Date from, @RequestParam Date to) {
+    public ApiResponse getUserShiftFromFact(@RequestParam String username, @RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
+        from = from != null ? Utils.toZeroHour(from) : null;
+        to = to != null ? Utils.toZeroHour(to) : null;
+
         Optional<User> userOp = USER_REPO.findByUsername(username);
         if (userOp.isEmpty()) {
             return ResponseUtil.buildError(
@@ -225,7 +242,10 @@ public class ShiftsController {
 
     @NeedLogs
     @GetMapping(CONTROLLER_ENDPOINT + "fact/getForAll")
-    public ApiResponse getUserShiftFromFact(@RequestParam Date from, @RequestParam Date to) {
+    public ApiResponse getUserShiftFromFact(@RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
+        from = from != null ? Utils.toZeroHour(from) : null;
+        to = to != null ? Utils.toZeroHour(to) : null;
+
         List<Shift> shifts;
 
         try {
