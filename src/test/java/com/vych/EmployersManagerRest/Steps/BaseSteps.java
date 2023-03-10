@@ -3,6 +3,8 @@ package com.vych.EmployersManagerRest.Steps;
 import com.vych.EmployersManagerRest.ApiCore.StatusCode;
 import com.vych.EmployersManagerRest.Domain.Rights.Right;
 import com.vych.EmployersManagerRest.Domain.Rights.RightScheme;
+import com.vych.EmployersManagerRest.Domain.Shifts.Shift;
+import com.vych.EmployersManagerRest.Domain.Shifts.ShiftPlan;
 import com.vych.EmployersManagerRest.Domain.Users.Role;
 import com.vych.EmployersManagerRest.Domain.Users.User;
 import com.vych.EmployersManagerRest.Repo.Accounts.AccountRepo;
@@ -15,13 +17,14 @@ import com.vych.EmployersManagerRest.Repo.Shifts.ShiftPlanRepo;
 import com.vych.EmployersManagerRest.Repo.Shifts.ShiftRepo;
 import com.vych.EmployersManagerRest.Repo.Users.RoleRepo;
 import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
-import com.vych.EmployersManagerRest.Utils;
+import com.vych.EmployersManagerRest.TestUtils;
 import io.qameta.allure.Step;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -71,10 +74,10 @@ public class BaseSteps {
 
     @Step("Создание нового пользователя без записи в БД")
     public User createUserWithoutCommit(String... role) {
-        String username = Utils.getRandomLettersStringWithLength(10);
+        String username = TestUtils.getRandomLettersStringWithLength(10);
         return new User()
                 .setUsername(username)
-                .setPassword(Utils.getRandomLettersStringWithLength(5) + Utils.getRandomNumbersStringWithLength(5))
+                .setPassword(TestUtils.getRandomLettersStringWithLength(5) + TestUtils.getRandomNumbersStringWithLength(5))
                 .setEnabled(true)
                 .setRole(new Role().setName(username).setAuthority(role.length > 0 ? role[0] : "ROLE_ADMIN"));
     }
@@ -96,6 +99,21 @@ public class BaseSteps {
             }
             RIGHT_REPO.delete(right);
         });
+
+        List<ShiftPlan> shiftPlans = SHIFT_PLAN_REPO.findAllByUser(user);
+        if (!shiftPlans.isEmpty()) {
+            for (ShiftPlan shiftPlan : shiftPlans) {
+                SHIFT_PLAN_REPO.delete(shiftPlan);
+            }
+        }
+
+        List<Shift> shiftFacts = SHIFT_REPO.findAllByUser(user);
+        if (!shiftPlans.isEmpty()) {
+            for (Shift shift : shiftFacts) {
+                SHIFT_REPO.delete(shift);
+            }
+        }
+
         USER_REPO.delete(user);
     }
 

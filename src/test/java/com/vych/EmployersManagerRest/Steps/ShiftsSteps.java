@@ -2,6 +2,7 @@ package com.vych.EmployersManagerRest.Steps;
 
 import com.vych.EmployersManagerRest.ApiCore.ApiResponse;
 import com.vych.EmployersManagerRest.Controllers.ShiftsController;
+import com.vych.EmployersManagerRest.Domain.Shifts.Shift;
 import com.vych.EmployersManagerRest.Domain.Shifts.ShiftPlan;
 import com.vych.EmployersManagerRest.Domain.Users.User;
 import com.vych.EmployersManagerRest.Repo.Accounts.AccountRepo;
@@ -46,5 +47,22 @@ public class ShiftsSteps extends BaseSteps{
                 );
     }
 
+    @Step("Создание нового плана смены")
+    public Shift createShiftFact(User user, LocalDateTime date) {
+        return new Shift()
+                .setShiftStart(date)
+                .setShiftEnd(date)
+                .setUser(user)
+                .setSalary(1000d)
+                .setSalaryType("shift");
+    }
+
+    @Step("Создание нового плана смены")
+    public ApiResponse createAndCommitShiftFact(User user, LocalDateTime date) {
+        return SHIFTS_CONTROLLER
+                .addShiftToFact(
+                        createShiftFact(user, date)
+                );
+    }
 
 }

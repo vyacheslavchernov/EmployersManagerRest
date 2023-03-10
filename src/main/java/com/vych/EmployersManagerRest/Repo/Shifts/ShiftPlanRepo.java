@@ -15,6 +15,9 @@ public interface ShiftPlanRepo extends JpaRepository<ShiftPlan, Long> {
     Optional<ShiftPlan> findByUser(User user);
     List<ShiftPlan> findAllByUser(User user);
 
+    @Query(value = "SELECT * FROM shifts_planer WHERE user_id = :user", nativeQuery = true)
+    List<ShiftPlan> findAllByUserId(@Param("user") Long userId);
+
     @Query(value = "SELECT * FROM shifts_planer WHERE user_id = :user and shift_date >= :from", nativeQuery = true)
     List<ShiftPlan> findAllByUserIdAndFromDate(@Param("user") Long userId, @Param("from") LocalDateTime from);
 

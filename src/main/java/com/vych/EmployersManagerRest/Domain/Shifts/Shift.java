@@ -5,6 +5,7 @@ import com.vych.EmployersManagerRest.ApiCore.Payloads.ResponsePayload;
 import com.vych.EmployersManagerRest.Domain.Users.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity(name = "shifts")
@@ -15,16 +16,16 @@ public class Shift implements ResponsePayload {
     @JsonProperty("id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn
     @JsonProperty("employee")
     private User user;
 
     @JsonProperty("shiftStart")
-    private Date shiftStart;
+    private LocalDateTime shiftStart;
 
     @JsonProperty("shiftEnd")
-    private Date shiftEnd;
+    private LocalDateTime shiftEnd;
 
     @JsonProperty("salaryType")
     private String salaryType;
@@ -50,20 +51,20 @@ public class Shift implements ResponsePayload {
         return this;
     }
 
-    public Date getShiftStart() {
+    public LocalDateTime getShiftStart() {
         return shiftStart;
     }
 
-    public Shift setShiftStart(Date shiftStart) {
+    public Shift setShiftStart(LocalDateTime shiftStart) {
         this.shiftStart = shiftStart;
         return this;
     }
 
-    public Date getShiftEnd() {
+    public LocalDateTime getShiftEnd() {
         return shiftEnd;
     }
 
-    public Shift setShiftEnd(Date shiftEnd) {
+    public Shift setShiftEnd(LocalDateTime shiftEnd) {
         this.shiftEnd = shiftEnd;
         return this;
     }

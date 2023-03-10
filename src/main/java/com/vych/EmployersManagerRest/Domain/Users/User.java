@@ -67,9 +67,6 @@ public class User implements ResponsePayload {
     @JsonView(Views.NonSensitiveData.class)
     private Role role;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<ShiftPlan> shiftsPlan;
-
     public Long getId() {
         return id;
     }
@@ -177,13 +174,4 @@ public class User implements ResponsePayload {
         this.role = role;
         return this;
     }
-
-//    public List<ShiftPlan> getShiftsPlan() {
-//        return shiftsPlan;
-//    }
-//
-//    public User setShiftsPlan(List<ShiftPlan> shiftsPlan) {
-//        this.shiftsPlan = shiftsPlan;
-//        return this;
-//    }
 }

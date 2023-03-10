@@ -3,7 +3,6 @@ package com.vych.EmployersManagerRest.Tests;
 import com.vych.EmployersManagerRest.ApiCore.ApiResponse;
 import com.vych.EmployersManagerRest.ApiCore.StatusCode;
 import com.vych.EmployersManagerRest.Controllers.ShiftsController;
-import com.vych.EmployersManagerRest.Domain.Rights.Right;
 import com.vych.EmployersManagerRest.Domain.Users.User;
 import com.vych.EmployersManagerRest.Repo.Accounts.AccountRepo;
 import com.vych.EmployersManagerRest.Repo.Accounts.OperationRepo;
@@ -16,15 +15,12 @@ import com.vych.EmployersManagerRest.Repo.Shifts.ShiftRepo;
 import com.vych.EmployersManagerRest.Repo.Users.RoleRepo;
 import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
 import com.vych.EmployersManagerRest.Steps.ShiftsSteps;
-import com.vych.EmployersManagerRest.Utils;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
 
 import static io.qameta.allure.Allure.step;
 
@@ -112,6 +108,35 @@ public class ShiftsTests extends BaseTest {
     @DisplayName("Проверка работы с фактически состоявшимися сменами")
     @Description(useJavaDoc = true)
     public void shiftsFactTest() {
+        var ref = new Object() {
+            final User secondTestUser = STEPS.createUserWithCommit("ROLE_ADMIN");
+            final int n = 5;
+            final LocalDateTime dt = LocalDateTime.now();
+        };
+
+        step("Добавление смен в факт", () -> {
+            for (int i = 0; i < ref.n; i++) {
+                LocalDateTime date = ref.dt.plusDays(i);
+
+                ApiResponse response = SHIFT_STEPS.createAndCommitShiftFact(testUser, date);
+                STEPS.checkApiResponseStatus(response.getStatus().getCode(), StatusCode.SUCCESS);
+
+                response = SHIFT_STEPS.createAndCommitShiftFact(ref.secondTestUser, date);
+                STEPS.checkApiResponseStatus(response.getStatus().getCode(), StatusCode.SUCCESS);
+            }
+        });
+
+        step("Получение смены на определённый день для пользователя", () -> {
+            ApiResponse response = SHIFTS_CONTROLLER.getUserShiftFromFact(
+                    testUser.getUsername(),
+                    ref.dt,
+                    ref.dt
+            );
+
+            STEPS.checkApiResponseStatus(response.getStatus().getCode(), StatusCode.SUCCESS);
+        });
+
+        STEPS.deleteUserFromBase(ref.secondTestUser);
     }
 
     /**

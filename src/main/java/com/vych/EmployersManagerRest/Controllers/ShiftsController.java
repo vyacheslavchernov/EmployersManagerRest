@@ -163,10 +163,16 @@ public class ShiftsController {
     @NeedLogs
     @PostMapping(CONTROLLER_ENDPOINT + "fact/add")
     public ApiResponse addShiftToFact(@RequestBody Shift shift) {
-        if (SHIFT_PLAN_REPO.findByUser(shift.getUser()).isPresent()) {
+        if (
+                !SHIFT_REPO.findAllByUserIdAndFromDateAndToDate(
+                        shift.getUser().getId(),
+                        Utils.toZeroHour(shift.getShiftStart()),
+                        Utils.toZeroHour(shift.getShiftEnd())
+                ).isEmpty()
+        ) {
             return ResponseUtil.buildError(
-                    new IncorrectData("У пользователя " + shift.getUser().getUsername() + " уже есть смена"),
-                    "Ошибка при попытке добавить смену в факт"
+                    new IncorrectData("У пользователя " + shift.getUser().getUsername() + " уже запланирована смена"),
+                    "Ошибка при попытке добавить смену в план"
             );
         }
 

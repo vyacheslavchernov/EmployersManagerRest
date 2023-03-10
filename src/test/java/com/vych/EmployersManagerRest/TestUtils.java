@@ -2,7 +2,7 @@ package com.vych.EmployersManagerRest;
 
 import java.util.Random;
 
-public class Utils {
+public class TestUtils {
     private static final Random r = new Random();
 
     public static String getRandomLettersStringWithLength(int length) {

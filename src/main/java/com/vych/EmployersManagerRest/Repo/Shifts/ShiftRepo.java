@@ -2,6 +2,7 @@ package com.vych.EmployersManagerRest.Repo.Shifts;
 
 import com.sun.xml.bind.v2.runtime.unmarshaller.Receiver;
 import com.vych.EmployersManagerRest.Domain.Shifts.Shift;
+import com.vych.EmployersManagerRest.Domain.Shifts.ShiftPlan;
 import com.vych.EmployersManagerRest.Domain.Users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public interface ShiftRepo extends JpaRepository<Shift, Long> {
+    Optional<ShiftPlan> findByUser(User user);
     List<Shift> findAllByUser(User user);
 
     @Query(value = "SELECT * FROM shifts_planer WHERE user_id = :user and shift_date >= :from", nativeQuery = true)

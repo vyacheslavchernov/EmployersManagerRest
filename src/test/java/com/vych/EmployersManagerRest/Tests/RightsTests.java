@@ -17,7 +17,7 @@ import com.vych.EmployersManagerRest.Repo.Shifts.ShiftRepo;
 import com.vych.EmployersManagerRest.Repo.Users.RoleRepo;
 import com.vych.EmployersManagerRest.Repo.Users.UserRepo;
 import com.vych.EmployersManagerRest.Steps.RightsSteps;
-import com.vych.EmployersManagerRest.Utils;
+import com.vych.EmployersManagerRest.TestUtils;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,7 @@ public class RightsTests extends BaseTest {
     public void rightsTest() {
         var ref = new Object() {
             ApiResponse response;
-            String rightBits = Utils.getRandomBitsWithLength(10);
+            String rightBits = TestUtils.getRandomBitsWithLength(10);
             Right right;
         };
 
@@ -85,7 +85,7 @@ public class RightsTests extends BaseTest {
         });
 
         step("Изменение прав пользователя", () -> {
-            ref.rightBits = Utils.getRandomBitsWithLength(5);
+            ref.rightBits = TestUtils.getRandomBitsWithLength(5);
             ref.right.setRightsBits(ref.rightBits);
             ref.response = RIGHTS_CONTROLLER.setUserRights(ref.right);
             STEPS.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
@@ -117,8 +117,8 @@ public class RightsTests extends BaseTest {
     @Description(useJavaDoc = true)
     public void rightsSchemeTest() {
         var ref = new Object() {
-            final String schemeName = Utils.getRandomLettersStringWithLength(10);
-            String rightBits = Utils.getRandomBitsWithLength(10);
+            final String schemeName = TestUtils.getRandomLettersStringWithLength(10);
+            String rightBits = TestUtils.getRandomBitsWithLength(10);
             ApiResponse response;
             RightScheme scheme;
         };
@@ -131,7 +131,7 @@ public class RightsTests extends BaseTest {
         });
 
         step("Изменение схемы прав", () -> {
-            ref.rightBits = Utils.getRandomBitsWithLength(5);
+            ref.rightBits = TestUtils.getRandomBitsWithLength(5);
             ref.scheme.setRightsBits(ref.rightBits);
             ref.response = RIGHTS_CONTROLLER.updateRightScheme(ref.scheme);
             STEPS.checkApiResponseStatus(ref.response.getStatus().getCode(), StatusCode.SUCCESS);
@@ -164,8 +164,8 @@ public class RightsTests extends BaseTest {
     @Description(useJavaDoc = true)
     public void addRightSchemeToUser() {
         var ref = new Object() {
-            final String schemeName = Utils.getRandomLettersStringWithLength(10);
-            final String rightBits = Utils.getRandomBitsWithLength(10);
+            final String schemeName = TestUtils.getRandomLettersStringWithLength(10);
+            final String rightBits = TestUtils.getRandomBitsWithLength(10);
             ApiResponse response;
             RightScheme scheme;
             Right right;
@@ -215,8 +215,8 @@ public class RightsTests extends BaseTest {
         step("Создание n схем правил в БД", () -> {
             for (int i = 0; i < n; i++) {
                 RIGHT_STEPS.addNewRightScheme(
-                        Utils.getRandomLettersStringWithLength(10),
-                        Utils.getRandomBitsWithLength(10)
+                        TestUtils.getRandomLettersStringWithLength(10),
+                        TestUtils.getRandomBitsWithLength(10)
                 );
             }
         });
